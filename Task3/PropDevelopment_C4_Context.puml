@@ -1,0 +1,29 @@
+@startuml
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+title Контекст новой системы "Умный дом" для собственников
+
+top to bottom direction
+
+SHOW_PERSON_OUTLINE()
+
+Person(owner, "Собственник", "Использует мобильное приложение для управления домофоном/шлагбаумом")
+
+System_Boundary(app_boundary, "Экосистема PropDevelopment") {
+    System(mobile_app, "Мобильное приложение", "Точка доступа для сервисов Умного дома")
+    System(crm, "CRM собственников", "Хранит профили, биометрию, номера авто, разрешения доступа")
+    System(jku_service, "Сервис управления ЖКУ", "Журналирование событий, управление устройствами")
+}
+
+System_Ext(intercom, "Интеллектуальный домофон", "Распознает лица, управляет замком")
+System_Ext(barrier, "Интеллектуальный шлагбаум", "Распознает номера, управляет сервоприводом")
+
+Rel(owner, mobile_app, "Управляет устройствами через:", "REST API")
+Rel_U(mobile_app, crm, "Проверяет разрешения доступа", "HTTPS")
+Rel(mobile_app, jku_service, "Отправляет события доступа", "HTTPS")
+
+Rel(mobile_app, intercom, "Отправляет команды управления открытием/закрытием", "MQTT/HTTPS")
+Rel(mobile_app, barrier, "Отправляет команды управления подъемом/опусканием", "MQTT/HTTPS")
+
+@enduml
