@@ -1,0 +1,2 @@
+useradd analyst
+useradd developer
